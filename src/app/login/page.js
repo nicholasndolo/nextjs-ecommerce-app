@@ -29,7 +29,7 @@ export default function Login(){
     user,
     setUser,
     componentLevelLoader,
-    setComponentLeveLoader
+    setComponentLevelLoader
   } = useContext(GlobalContext)
 
   const router = useRouter()
@@ -40,7 +40,7 @@ export default function Login(){
   }
 
   async function handleLogin(){
-    setComponentLeveLoader({loading: true, id: ''})
+    setComponentLevelLoader({loading: true, id: ''})
     const res = await login(formData)
     console.log(res)
 
@@ -48,19 +48,19 @@ export default function Login(){
       toast.success(res.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
-      setComponentLeveLoader({loading: false, id: ''})
       setIsAuthUser(true)
       setUser(res?.finalData?.user)
       setFormData(initialFormData)
       Cookies.set('token', res?.finalData?.token)
       localStorage.setItem('user',JSON.stringify(res?.finalData?.user))
+        setComponentLevelLoader({loading: false, id: ''})
 
     } else {
       toast.error(res.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
       setIsAuthUser(false)
-      setComponentLeveLoader({loading: false, id: ''})
+      setComponentLevelLoader({loading: false, id: ''})
     }
 
   }
@@ -102,7 +102,7 @@ export default function Login(){
                       >
                         {componentLevelLoader && componentLevelLoader.loading? (
                           <ComponentLevelLoader
-                          text={"Please wait"}
+                          text={"Logging In"}
                           color={"#ffffff"}
                           loading={componentLevelLoader && componentLevelLoader.loading}
                           />

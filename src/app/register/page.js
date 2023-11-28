@@ -8,7 +8,7 @@ import ComponentLevelLoader from "@/components/Loader/componentLevel";
 import { GlobalContext } from "@/context";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import Notification from "@/components/Notification";
+// import Notification from "@/components/Notification";
 
 
 const initialFormData = {
@@ -35,18 +35,20 @@ export default function Register(){
   async function handleRegister() {
     setPageLevelLoader(true);
     const data = await registerNewUser(formData)
-
+      console.log(data)
     if (data.success) {
-      // toast.success(data.message, {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
+      toast.success(data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+
       setIsRegistered(true);
       setPageLevelLoader(false);
       setFormData(initialFormData);
     } else {
-      // toast.error(data.message, {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
+      toast.error(data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      
       setPageLevelLoader(false);
       setFormData(initialFormData);
     }
