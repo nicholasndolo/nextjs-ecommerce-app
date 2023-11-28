@@ -1,8 +1,10 @@
-import connectToDB from "@/database"
+// import connectToDB from "@/database"
+import { connectToDB } from '@/database';
 import Joi from "joi"
 import { hash } from "bcryptjs"
 import { NextResponse } from "next/server"
 import User from "@/models/user"
+
 
 
 const schema = Joi.object({
@@ -16,7 +18,7 @@ export const dynamic = 'force-dynamic'
 
 
 export async function POST(req){
-  await connectToDB();
+  await connectToDB()
 
   const { name, email, password, role } = await req.json()
 
