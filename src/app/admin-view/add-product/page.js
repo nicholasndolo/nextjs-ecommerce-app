@@ -3,9 +3,16 @@
 import InputComponent from "@/components/FormElements/InputComponent"
 import SelectComponent from "@/components/FormElements/SelectComponent"
 import TileComponent from "@/components/FormElements/TileComponent"
+import ComponentLevelLoader from "@/components/Loader/componentLevel"
+import Notification from "@/components/Notification"
+import { GlobalContext } from "@/context"
+import { addNewProduct } from "@/services/product"
 import { AvailableSizes, adminAddProductformControls, firebaseConfig, firebaseStroageURL } from "@/utils"
 import { initializeApp } from 'firebase/app'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import { useRouter } from "next/navigation"
+import { useContext } from "react"
+import { toast } from "react-toastify";
 
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app, firebaseStroageURL ) 
@@ -34,7 +41,25 @@ async function helperForUploadingImageToFirebase(file){
 
 }
 
+const initialFormData = {
+  name: '',
+  price: 0,
+  description: '',
+  category: 'men',
+  sizes: [],
+  deliveryInfo: '',
+  onSale: 'no',
+  imageUrl: '',
+  priceDrop: 0
+}
+
 export default function AdminAddNewProduct (){
+
+  const [formData,setFormData] = useState(initialFormData)
+
+  const { componentLevelLoader, setComponentLevelLoader} = useContext(GlobalContext)
+
+  const router = useRouter()
 
   async function handleImage(event){
     console.log(event.target.files)
@@ -42,6 +67,56 @@ export default function AdminAddNewProduct (){
     const extractImageUrl = await helperForUploadingImageToFirebase(event.target.files[0])
 
     console.log(extractImageUrl)
+
+    if(extractImageUrl !== "") {
+      setFormData({
+        ...formData, imageUrl: extractImageUrl,
+      })
+    }
+  }
+
+  console.log(formData)
+
+  function handleTileClick(getCurrentItem){
+    // console.log(getCurrentItem)
+
+    let sizesCopy = [...formData.sizes]
+    const index = sizesCopy.findIndex(item => item.id === getCurrentItem.id)
+
+    if(index === -1){
+      sizesCopy.push(getCurrentItem)
+    } else {
+      sizesCopy = sizesCopy.filter(item => item.id !== getCurrentItem.id)
+    }
+
+    setFormData({
+      ...formData, sizes: sizesCopy
+    })
+
+    async function handleAddProduct() {
+      setComponentLevelLoader({loading: true, id: ''})
+      const res = await addNewProduct(formData)
+
+      console.log(res)
+
+      if(res.success) {
+        setComponentLevelLoader({loading: false, id: ''})
+        toast.success(res.message, {
+          position: toast.POSITION.TOP_RIGHT
+        })
+        setFormData(initialFormData)
+        setTimeout(() => {
+          router.push('/admin-view/all-products')
+        }, 1000)
+      } else{
+        setComponentLevelLoader({loading: false, id: ''})
+        toast.error(res.message, {
+          position: toast.POSITION.TOP_RIGHT
+        })
+
+        setFormData(initialFormData)
+      }
+    }
   }
   return (
     <div className="w-full mt-5 mx-0 mb-0 relative">
@@ -57,6 +132,8 @@ export default function AdminAddNewProduct (){
           <div className="flex gap-2 flex-col">
             <label>Available sizes</label>
             <TileComponent
+            selected={formData.sizes}
+            onTileClick={handleTileClick}
             data={AvailableSizes}
             />
           </div>
@@ -65,21 +142,44 @@ export default function AdminAddNewProduct (){
             type={controlItem.type}
             placeholder={controlItem.placeholder}
             label={controlItem.label}
+            value={formData[controlItem.id]}
+            onChange={(event) => {
+              setFormData({
+                ...formData, [controlItem.id]: event.target.value
+              })
+            }}
              />
             ) :
             controlItem.componentType === 'select' ? (
             <SelectComponent
              label={controlItem.label}
              options={controlItem.options}
+             value={formData[controlItem.id]}
+            onChange={(event) => {
+              setFormData({
+                ...formData, [controlItem.id]: event.target.value
+              })
+            }}
             />
             ):null
             )}
-            <button className="inline-flex  w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide">
-              Add Product
+            <button
+             onClick={handleAddProduct}
+             className="inline-flex  w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide">
+             {
+              componentLevelLoader && componentLevelLoader.loading ? 
+              <ComponentLevelLoader
+              text={"Adding Product"}
+              color={"#ffffff"}
+              loading={componentLevelLoader && componentLevelLoader.loading}
+              /> 
+              : " Add Product"
+             }
             </button>
         </div>
 
       </div>
+      <Notification />
     </div>
   )
 }
