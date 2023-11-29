@@ -19,7 +19,7 @@ export const addNewProduct = async (formData) => {
 
     const data = await response.json()
     return data
-  } catch (err) {
-
+  } catch (error) {
+    console.log(error)
   }
 }
