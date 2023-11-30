@@ -6,12 +6,12 @@ import TileComponent from "@/components/FormElements/TileComponent"
 import ComponentLevelLoader from "@/components/Loader/componentLevel"
 import Notification from "@/components/Notification"
 import { GlobalContext } from "@/context"
-import { addNewProduct } from "@/services/product"
+import { addNewProduct, updateProduct } from "@/services/product"
 import { AvailableSizes, adminAddProductformControls, firebaseConfig, firebaseStroageURL } from "@/utils"
 import { initializeApp } from 'firebase/app'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { useRouter } from "next/navigation"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { toast } from "react-toastify";
 
 const app = initializeApp(firebaseConfig)
@@ -57,9 +57,21 @@ export default function AdminAddNewProduct (){
 
   const [formData,setFormData] = useState(initialFormData)
 
-  const { componentLevelLoader, setComponentLevelLoader} = useContext(GlobalContext)
+  const { 
+    componentLevelLoader, 
+    setComponentLevelLoader, 
+    currentUpdatedProduct, 
+    setCurrentUpdatedProduct
+  } = useContext(GlobalContext)
+
+  console.log(currentUpdatedProduct)
 
   const router = useRouter()
+
+  useEffect(() => {
+    if(currentUpdatedProduct !== null) setFormData(currentUpdatedProduct)
+    
+  }, [currentUpdatedProduct])
 
   async function handleImage(event){
     console.log(event.target.files)
@@ -92,30 +104,34 @@ export default function AdminAddNewProduct (){
     setFormData({
       ...formData, sizes: sizesCopy
     })
+  }
 
-    async function handleAddProduct() {
-      setComponentLevelLoader({loading: true, id: ''})
-      const res = await addNewProduct(formData)
+  async function handleAddProduct() {
+    setComponentLevelLoader({loading: true, id: ''})
+    const res = currentUpdatedProduct !== null
+     ? await updateProduct(formData)
+     :  await addNewProduct(formData)
 
-      console.log(res)
+    console.log(res)
 
-      if(res.success) {
-        setComponentLevelLoader({loading: false, id: ''})
-        toast.success(res.message, {
-          position: toast.POSITION.TOP_RIGHT
-        })
-        setFormData(initialFormData)
-        setTimeout(() => {
-          router.push('/admin-view/all-products')
-        }, 1000)
-      } else{
-        setComponentLevelLoader({loading: false, id: ''})
-        toast.error(res.message, {
-          position: toast.POSITION.TOP_RIGHT
-        })
+    if(res.success) {
+      setComponentLevelLoader({loading: false, id: ''})
+      toast.success(res.message, {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      setFormData(initialFormData)
+      setCurrentUpdatedProduct(null)
 
-        setFormData(initialFormData)
-      }
+      setTimeout(() => {
+        router.push('/admin-view/all-products')
+      }, 1000)
+    } else{
+      setComponentLevelLoader({loading: false, id: ''})
+      toast.error(res.message, {
+        position: toast.POSITION.TOP_RIGHT
+      })
+
+      setFormData(initialFormData)
     }
   }
   return (
@@ -167,14 +183,17 @@ export default function AdminAddNewProduct (){
              onClick={handleAddProduct}
              className="inline-flex  w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide">
              {
-              componentLevelLoader && componentLevelLoader.loading ? 
+              componentLevelLoader && componentLevelLoader.loading ?( 
               <ComponentLevelLoader
-              text={"Adding Product"}
-              color={"#ffffff"}
-              loading={componentLevelLoader && componentLevelLoader.loading}
+                text={currentUpdatedProduct !== null ? 'Updating Product':'Adding Product'}
+                color={"#ffffff"}
+                loading={componentLevelLoader && componentLevelLoader.loading}
               /> 
-              : " Add Product"
-             }
+            ) : currentUpdatedProduct !== null ? (
+              'Update Product'
+            ) : (
+              'Add Product'
+            )}
             </button>
         </div>
 

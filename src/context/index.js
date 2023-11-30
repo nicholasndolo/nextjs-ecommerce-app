@@ -10,6 +10,7 @@ export default function GlobalState({ children }){
   const [componentLevelLoader, setComponentLevelLoader] = useState({loading: false, id: ''});
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
+  const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
 
   useEffect(() => {
     if(Cookies.get('token') !== undefined) {
@@ -32,7 +33,9 @@ export default function GlobalState({ children }){
       user,
       setUser,
       componentLevelLoader,
-      setComponentLevelLoader
+      setComponentLevelLoader,
+      currentUpdatedProduct, 
+      setCurrentUpdatedProduct
       }}
     >
       { children }

@@ -1,8 +1,15 @@
+import { useRouter } from "next/router";
 import ProductButton from "./ProductButtons";
 import ProductCard from "./ProductCard";
+import Notification from "../Notification";
 
 
 export default function CommonListing({data}){
+  const router = useRouter()
+
+  useEffect(() => {
+    router.refresh();
+  },[])
   return (
     <section className="bg-white py-12 sm:py-16">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -20,6 +27,7 @@ export default function CommonListing({data}){
         </div>
 
       </div>
+      <Notification/>
     </section>
   )
 }

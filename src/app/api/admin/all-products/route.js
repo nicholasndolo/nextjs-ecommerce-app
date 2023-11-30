@@ -9,10 +9,6 @@ export async function GET(req){
   try {
     await connectToDB()
 
-    const user = "admin"
-  
-    if(user === "admin"){
-
       const extractAllProducts = await Product.find({})
 
       if(extractAllProducts){
@@ -28,12 +24,6 @@ export async function GET(req){
         })
       }
   
-    } else {
-      return NextResponse.json({
-        success: false,
-        message: "You are mot authorized !"
-      })
-    }
   } catch (error) {
     console.log(error)
     return NextResponse.json({
