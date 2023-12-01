@@ -82,6 +82,7 @@ export const productByCategory = async(id)=>{
   try{
     const res = fetch(`http://localhost:3000/api/admin/product-by-category?id=${id}`,{
       method: 'GET',
+      cache: 'no-store'
     })
 
     const data = (await res).json()
