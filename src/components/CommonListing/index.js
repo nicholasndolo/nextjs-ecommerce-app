@@ -17,7 +17,11 @@ export default function CommonListing({data}){
           {
             data && data.length ? 
             data.map( item => (
-              <article className="relative flex flex-col overflow-hidden border cursor-pointer" key={item._id}>
+              <article 
+              className="relative flex flex-col overflow-hidden border cursor-pointer" 
+              key={item._id}
+              onClick={() => router.push(`/product/${item._id}`)}
+              >
                 <ProductCard item={item}/>
                 <ProductButton item={item}/>
               </article>
