@@ -50,13 +50,19 @@ export default function CommonDetails(){
         </div>
         <div className="lg:col-span-2 lg:row-span-2 lg:row-end-2">
           <h1
+            className="text-2xl font-bold text-gray-900"
           >
             {item && item.name}
           </h1>
-        </div>
-        <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
+
+          <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
           <div className="flex items-end">
-            <h1 className="text-3xl font-bold">${item && item.price}</h1>
+            <h1 className={`text-3xl font-bold mr-2 ${item.onSale === 'yes' ? 'line-through' : ''}` }>${item && item.price}</h1>
+            {item.onSale === 'yes' ? (
+              <h1 className="text-3xl font-bold text-red-700">
+                {`$${(item.price - item.price * (item.priceDrop/100)).toFixed(2)}`}
+              </h1>)
+              : null}
           </div>
           <button
            type="button"
@@ -87,6 +93,8 @@ export default function CommonDetails(){
           </div>
 
         </div>
+        </div>
+       
       </div >
 
     </div>

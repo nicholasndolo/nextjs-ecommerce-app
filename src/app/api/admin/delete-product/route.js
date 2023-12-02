@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDB } from '@/database';
 import Product from '@/models/product';
+import AuthUser from '@/middleware/AuthUser';
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,8 @@ export const dynamic = "force-dynamic";
 export async function DELETE(req) {
   try {
     await connectToDB()
+
+    const isAuthUser = await AuthUser(req)
 
     const {searchParams} = new URL(req.url)
     const id = searchParams.get('id')
