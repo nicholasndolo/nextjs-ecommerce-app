@@ -13,7 +13,8 @@ export async function DELETE(req) {
 
     const isAuthUser = await AuthUser(req)
 
-    const {searchParams} = new URL(req.url)
+    if(isAuthUser?.role === "admin") {
+      const {searchParams} = new URL(req.url)
     const id = searchParams.get('id')
 
     if(!id) return NextResponse({success: false, message: 'Product ID is required'})
@@ -31,6 +32,14 @@ export async function DELETE(req) {
         message: 'Failed to delete product ! Please try again',
       })
     }
+    } else{
+      return NextResponse.json({
+        success: false,
+        message: 'You are not authorized to perform this action'
+      })
+    }
+
+    
 
   } catch (e) {
     console.log(e)

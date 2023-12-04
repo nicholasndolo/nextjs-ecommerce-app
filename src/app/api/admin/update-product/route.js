@@ -2,56 +2,70 @@
 import { NextResponse } from 'next/server';
 import { connectToDB } from '@/database';
 import Product from '@/models/product';
+import AuthUser from '@/middleware/AuthUser';
 
 export const dynamic = "force-dynamic"
 
 export async function PUT(req) {
   try {
     await connectToDB()
-    const extractData = await req.json()
 
-    const {
-       _id,
-        name,
-        price,
-        description,
-        category, 
-        sizes,
-        deliveryInfo, 
-        onSale, 
-        priceDrop, 
-        imageUrl
-       } = extractData
+    const isAuthUser = await AuthUser(req)
 
-    const updatedProduct = await Product.findOneAndUpdate({
-      _id: _id
-    }, 
-    {
-      name,
-      price, 
-      description, 
-      category, sizes, 
-      deliveryInfo, 
-      onSale, 
-      priceDrop, 
-      imageUrl 
-    },
-    { new: true}
-    )
+    if(isAuthUser?.role === "admin") {
 
-    if(updatedProduct){
-      return NextResponse({
-        success: true,
-        message: 'Product updated successfully'
-      })
+      const extractData = await req.json()
 
+      const {
+        _id,
+         name,
+         price,
+         description,
+         category, 
+         sizes,
+         deliveryInfo, 
+         onSale, 
+         priceDrop, 
+         imageUrl
+        } = extractData
+ 
+     const updatedProduct = await Product.findOneAndUpdate({
+       _id: _id
+     }, 
+     {
+       name,
+       price, 
+       description, 
+       category, sizes, 
+       deliveryInfo, 
+       onSale, 
+       priceDrop, 
+       imageUrl 
+     },
+     { new: true}
+     )
+ 
+     if(updatedProduct){
+       return NextResponse({
+         success: true,
+         message: 'Product updated successfully'
+       })
+ 
+     } else {
+       return NextResponse.json({
+         success: false,
+         message: "Failed to update the product ! Please try again later"
+       })
+     }
+ 
     } else {
       return NextResponse.json({
         success: false,
-        message: "Failed to update the product ! Please try again later"
+        message: "You are not authorized to perform this action"
       })
     }
 
+  
   } catch (error) {
     console.log(error)
     return NextResponse.json({
