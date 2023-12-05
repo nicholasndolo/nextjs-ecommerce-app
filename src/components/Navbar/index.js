@@ -6,6 +6,7 @@ import { adminNavOptions, navOptions } from "@/utils"
 
 import { Fragment, useContext, useEffect } from "react";
 import CommonModal from "../CommonModal";
+import CartModal from "../CartModal";
 
 
 function NavItems({isModalView=false, isAdminView, router}){
@@ -32,7 +33,16 @@ function NavItems({isModalView=false, isAdminView, router}){
 
 export default function Navbar(){
 
-  const { user, isAuthUser, setIsAuthUser, setUser, currentUpdatedProduct, setCurrentUpdatedProduct } = useContext(GlobalContext)
+  const { 
+    user, 
+    isAuthUser, 
+    setIsAuthUser, 
+    setUser, 
+    currentUpdatedProduct, 
+    setCurrentUpdatedProduct,
+    showCartModal
+   } = useContext(GlobalContext)
+  
   const { showNavModal, setShowNavModal} = useContext(GlobalContext)
 
   const pathName = usePathname()
@@ -113,6 +123,10 @@ export default function Navbar(){
        showModalTitle={false}
        mainContent={<NavItems isModalView={true} isAdminView={isAdminView} router={router} />}
       />
+      {
+        showCartModal && 
+        <CartModal/>
+      }
     </>
   )
 }
