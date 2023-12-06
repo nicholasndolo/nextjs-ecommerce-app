@@ -1,6 +1,9 @@
 'use client'
 
-export default function CommonCart({cartItems = []}){
+import ComponentLevelLoader from "../Loader/componentLevel"
+
+export default function CommonCart({cartItems = [], handleDeleteCartItem, componentLevelLoader}){
+  
   return (
     <section className="h-screen bg-gray-100">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,8 +35,16 @@ export default function CommonCart({cartItems = []}){
                                 <p className="shrink-0 w-20 text-base font-semibold text-gray-950 sm:order-1 sm:ml-8 sm:text-right">
                                 ${cartItem && cartItem.productID && cartItem.productID.price}
                                 </p>
-                                <button type="button" className="font-medium text-yellow-700 sm:order-2">
-                                  Remove
+                                <button 
+                                  type="button" className="font-medium text-yellow-700 sm:order-2"
+                                  onClick={() => handleDeleteCartItem(cartItem._id)}
+                                  >
+                                 {componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.id === cartItem._id ? <ComponentLevelLoader
+                                  text={'Removing'}
+                                  color={"#000000"}
+                                  loading={componentLevelLoader && componentLevelLoader.loading}
+                                 /> :'Remove'
+                                 }
                                 </button>
                               </div>
 
@@ -50,7 +61,7 @@ export default function CommonCart({cartItems = []}){
               <div className="mt-6 border-t border-b py-2">
                 <div className="flex items-center justify-between">
                   <p className='text-sm text-gray-400'>Subtotal</p>
-                  <p className="text-lg text-gray-400 font-semibold">
+                  <p className="text-lg text-black font-semibold">
                     ${ cartItems && cartItems.length ?
                     cartItems.reduce((total, item) => item.productID.price + total, 0)
                      : '0' }
@@ -59,7 +70,7 @@ export default function CommonCart({cartItems = []}){
                 </div>
                 <div className="flex items-center justify-between">
                   <p className='text-sm text-gray-400'>Shipping</p>
-                  <p className="text-lg text-gray-400 font-semibold">
+                  <p className="text-lg text-black font-semibold">
                     $0
 
                   </p>
@@ -67,7 +78,7 @@ export default function CommonCart({cartItems = []}){
 
                 <div className="flex items-center justify-between">
                   <p className='text-sm text-gray-400'>Total</p>
-                  <p className="text-lg text-gray-400 font-semibold">
+                  <p className="text-lg text-black font-semibold">
                     ${ cartItems && cartItems.length ?
                     cartItems.reduce((total, item) => item.productID.price + total, 0)
                      : '0' }

@@ -1,4 +1,4 @@
-import { Space_Mono } from "next/font/google"
+'use client'
 import { PulseLoader } from "react-spinners"
 
 export default function ComponentLevelLoader({text, color, loading, size}){
