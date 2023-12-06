@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { connectToDB } from '@/database';
 import AuthUser from '@/middleware/AuthUser';
 import Joi from 'joi';
+import Address from '@/models/address';
 
 const AddNewAddress = Joi.object({
   fullName: Joi.string().required(),
@@ -30,6 +31,18 @@ export async function POST(req) {
         return NextResponse.json({
           success: false,
           message: error.details[0].message,
+        })
+      }
+      const newlyAddedAddress = await Address.create(data)
+      if(newlyAddedAddress){
+        return NextResponse.json({
+          success: true,
+          message: "Address added successfully"
+        })
+      } else{
+        return NextResponse.json({
+          success: false,
+          message: "Failed to add address ! Please try again"
         })
       }
     } else {
