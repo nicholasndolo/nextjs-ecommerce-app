@@ -40,7 +40,8 @@ export default function Navbar(){
     setUser, 
     currentUpdatedProduct, 
     setCurrentUpdatedProduct,
-    showCartModal
+    showCartModal,
+    setShowCartModal
    } = useContext(GlobalContext)
   
   const { showNavModal, setShowNavModal} = useContext(GlobalContext)
@@ -75,7 +76,12 @@ export default function Navbar(){
               !isAdminView && isAuthUser ? (
                 <Fragment>
                   <button className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">Account</button>
-                  <button className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white" >Cart</button>
+                  <button 
+                    className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                    onClick={() => setShowCartModal(true) }
+                  >
+                      Cart
+                  </button>
                 </Fragment>
                 ) : null }
             {

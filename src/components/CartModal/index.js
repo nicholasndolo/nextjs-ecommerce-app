@@ -6,11 +6,14 @@ import { GlobalContext } from "@/context";
 import { deleteFromCart, getAllCartItems } from "@/services/cart";
 import { ComponentLevelLoader } from '@/components/Loader/componentLevel';
 import { toast } from 'react-toastify';
+import { useRouter } from "next/router";
 
 
 export default function CartModal() {
 
   const { showCartModal, setShowCartModal, cartItems, setCartItems,componentLevelLoader, setComponentLevelLoader, user} = useContext(GlobalContext)
+
+  const router = useRouter()
 
   async function extractAllCartItems() {
     const res = await getAllCartItems(user?._id)
@@ -109,6 +112,10 @@ async function  handleDeleteCartItem(cartItemId) {
         <Fragment>
           <button
           type="button"
+          onClick={() => {
+            router.push('/cart')
+            setShowCartModal(false)
+          }}
             className="mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
           >
             Go To Cart

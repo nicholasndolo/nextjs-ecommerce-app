@@ -13,7 +13,7 @@ export default function ProductButton({item}){
 
   const pathName = usePathname()
 
-  const { setCurrentUpdatedProduct, setComponentLevelLoader,  componentLevelLoader, user, showCartModel, setShowCartModel } = useContext(GlobalContext)
+  const { setCurrentUpdatedProduct, setComponentLevelLoader,  componentLevelLoader, user, showCartModal, setShowCartModal } = useContext(GlobalContext)
 
   const router = useRouter()
   
@@ -48,13 +48,13 @@ export default function ProductButton({item}){
         
       })
       setComponentLevelLoader({loading: false, id: ''})
-      setShowCartModel(true)
+      setShowCartModal(true)
     } else {
       toast.error(res.message, {
         position: toast.POSITION.TOP_RIGHT,
       })
       setComponentLevelLoader({loading: false, id: ''})
-      setShowCartModel(true)
+      setShowCartModal(true)
 
     }
 
