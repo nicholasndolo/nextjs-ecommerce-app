@@ -1,3 +1,5 @@
+"use client";
+
 import { Fragment, useContext, useEffect } from "react";
 import CommonModal from "../CommonModal";
 import { GlobalContext } from "@/context";
