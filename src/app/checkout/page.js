@@ -2,6 +2,8 @@
 
 import { GlobalContext } from "@/context"
 import { fetchAllAddress } from "@/services/address"
+import { callStripeSession } from "@/services/stripe"
+import { loadStripe } from "@stripe/stripe-js"
 import { useRouter } from "next/router"
 import { useContext } from "react"
 
@@ -10,8 +12,12 @@ export default function Checkout(){
   // console.log(cartItems)
 
   const [selectedAddress, setSelectedAddress] = useState(null)
+  const [isOrderProcessing, setIsOrderProcessing] = useState(false)
 
   const router = useRouter()
+//add publishable key from stripe API Keys
+  const publishableKey = ""
+  const stripePromise = loadStripe(publishableKey)
 
   async function getAllAddresses(){
     const res = await fetchAllAddress(user?._id)
@@ -49,6 +55,33 @@ export default function Checkout(){
         address: getAddress.address
       }
     })
+  }
+
+  async function handleCheckout(){
+    const stripe = await stripePromise
+
+    const createLineItems = cartItems.map(item =>({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          image: [item.productID.imageUrl],
+          name: item.productID.name
+        },
+        unit_amount: item.productID.price * 100
+      },
+      quantity: 1
+    }))
+
+    const res = await callStripeSession(createLineItems)
+    setIsOrderProcessing(true)
+    localStorage.setItem('stripe', true)
+    localStorage.setItem('checkoutFormData', JSON.stringify(checkoutFormData))
+
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: res.setIsOrderProcessing
+    })
+
+    console.log(error)
   }
 
   return(
@@ -142,6 +175,7 @@ export default function Checkout(){
           <div className="pb-10">
             <button
             disabled={(cartItems && cartItems.length ===0) || Object.keys(checkoutFormData.shippingAddress).length === 0}
+            onClick={handleCheckout}
             className="disabled:opacity-50 mt-5 mr-5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
             >
             Checkout
