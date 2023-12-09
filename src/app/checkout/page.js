@@ -1,11 +1,16 @@
 "use-client"
 
+import Notification from "@/components/Notification"
 import { GlobalContext } from "@/context"
 import { fetchAllAddress } from "@/services/address"
+import { createNewOrder } from "@/services/order"
 import { callStripeSession } from "@/services/stripe"
 import { loadStripe } from "@stripe/stripe-js"
-import { useRouter } from "next/router"
+import { useRouter, useSearchParams } from "next/navigation"
+
 import { useContext } from "react"
+import { PulseLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 
 export default function Checkout(){
   const { cartItems, user, addresses, setAddresses, checkoutFormData, setCheckoutFormData} = useContext(GlobalContext)
@@ -13,8 +18,10 @@ export default function Checkout(){
 
   const [selectedAddress, setSelectedAddress] = useState(null)
   const [isOrderProcessing, setIsOrderProcessing] = useState(false)
+  const [orderSuccess, setOrderSuccess] = useState(false)
 
   const router = useRouter()
+  const params = useSearchParams()
 //add publishable key from stripe API Keys
   const publishableKey = ""
   const stripePromise = loadStripe(publishableKey)
@@ -32,6 +39,49 @@ export default function Checkout(){
   }, [user])
 
   // console.log(addresses)
+
+  useEffect(() =>{
+    async function createFinalOrder(){
+      const isStripe = JSON.parse(localStorage.getItem('stripe'))
+
+      if( isStripe && params.get('status') === 'success' && cartItems && cartItems.length > 0 ){
+        setIsOrderProcessing(true)
+
+        const getCheckoutFormData = JSON.parse(localStorage.getItem('checkoutFormData'))
+
+        const createFinalCheckoutFormData = {
+          user: user?._id,
+          shippingAddress: getCheckoutFormData.shippingAddress,
+          orderItems: cartItems.map((item) => ({
+            qty: 1,
+            product: item.productID
+          })),
+          paymentMethod: 'Stripe',
+          totalPrice: cartItems.reduce((total, item) => item.productID + total, 0),
+          isPaid: true,
+          isProcessing: true,
+          paidAt: new Date(),
+        }
+        const res = await createNewOrder(createFinalCheckoutFormData)
+
+        if(res.success){
+          setIsOrderProcessing(false)
+          setOrderSuccess(true)
+          toast.success(res.message, {
+          position: toast.POSITION.TOP_RIGHT
+          })
+        } else {
+          setIsOrderProcessing(false)
+          setOrderSuccess(false)
+          toast.error(res.message, {
+          position: toast.POSITION.TOP_RIGHT
+          })
+        }
+      }
+    }
+    createFinalOrder() 
+    
+  },[params.get('status'), cartItems])
 
   function handleSelectedAddress(getAddress){
 
@@ -82,6 +132,41 @@ export default function Checkout(){
     })
 
     console.log(error)
+  }
+
+  if(orderSuccess) {
+    return (
+      <section className="h-screen bg-gray-200 ">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mt-8 max-w-screen-xl px-4 sm:px-6 lg:px-8">
+            <div className="bg-white shadow">
+              <div className="px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
+                <h1 className="font-bold text-lg">Your Payment is successfull</h1>
+                <button
+                  className="mt-5 mr-5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                  >
+                    View your orders
+                 </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if(isOrderProcessing) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <PulseLoader
+          color={"#000000"}
+          loading={isOrderProcessing}
+          size={30}
+          data-testid="loader"
+        />
+      </div>
+    )
   }
 
   return(
@@ -185,6 +270,7 @@ export default function Checkout(){
         </div>    
         
       </div>
+      <Notification/>
     </div>
   )
 }
