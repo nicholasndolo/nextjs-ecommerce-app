@@ -8,7 +8,7 @@ import { callStripeSession } from "@/services/stripe"
 import { loadStripe } from "@stripe/stripe-js"
 import { useRouter, useSearchParams } from "next/navigation"
 
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { PulseLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 
@@ -134,6 +134,16 @@ export default function Checkout(){
     console.log(error)
   }
 
+  useEffect(() => {
+    if(orderSuccess) {
+      setTimeout(() =>{
+        // setOrderSuccess(false)
+        router.push('/order')
+      }, [2000])
+    }
+
+  }, [orderSuccess])
+
   if(orderSuccess) {
     return (
       <section className="h-screen bg-gray-200 ">
@@ -141,12 +151,8 @@ export default function Checkout(){
           <div className="mx-auto mt-8 max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <div className="bg-white shadow">
               <div className="px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
-                <h1 className="font-bold text-lg">Your Payment is successfull</h1>
-                <button
-                  className="mt-5 mr-5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
-                  >
-                    View your orders
-                 </button>
+                <h1 className="font-bold text-lg">Your Payment is successfull. You will be redirected to orders page shortly !</h1>
+                
               </div>
             </div>
 
