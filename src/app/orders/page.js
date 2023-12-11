@@ -5,11 +5,20 @@ import { getAllOrdersForUser } from "@/services/order"
 import { useContext } from "react"
 import { toast } from 'react-toastify';
 import { PulseLoader } from 'react-spinners';
+import { useRouter } from "next/navigation";
 
 
 export default function Orders(){
 
-  const {user, pageLevelLoader, setPageLevelLoader, allOrdersForUser, setAllOrdersForUser} = useContext(GlobalContext)
+  const {
+    user, 
+    pageLevelLoader, 
+    setPageLevelLoader, 
+    allOrdersForUser, 
+    setAllOrdersForUser
+  } = useContext(GlobalContext)
+
+  const router = useRouter()
 
   async function extractAllOrders(){
     setPageLevelLoader(true)
@@ -51,7 +60,7 @@ export default function Orders(){
     )
   }
   return (
-    <section className="h-screen bg-gray-200 ">
+    <section>
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mt-8 mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div >
@@ -62,7 +71,7 @@ export default function Orders(){
                   <ul className="flex flex-col gap-4">
                     {
                       allOrdersForUser.map(item => (
-                        <li key={item._id} className="bg-white shadow p-5 flex flex-col space-y-3 py-6 text-left">
+                        <li key={item._id} className="bg-gray-200 shadow p-5 flex flex-col space-y-3 py-6 text-left">
                           <div className="flex">
                             <h1 className="font-bold text-lg mb-3 flex-1"> #order: {item._id}
                             </h1>
@@ -88,7 +97,8 @@ export default function Orders(){
                             </button>
 
                             <button
-                              className="disabled:opacity-50 mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                              onClick={() => router.push(`/orders/${item._id}`)}
+                              className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
                             >
                              View Order Details
                             </button>

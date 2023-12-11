@@ -9,6 +9,7 @@ import { addNewAddressFormControls } from "@/utils"
 import { useContext, useEffect, useState } from "react"
 import { toast } from 'react-toastify';
 import { PulseLoader } from 'react-spinners';
+import { useRouter } from "next/navigation"
 
 export default function Account(){
   const { 
@@ -25,6 +26,7 @@ export default function Account(){
 
    const [showAddressForm, setShowAddressForm] = useState(false)
    const [currentEditedAddressId, setCurrentEditedAddressId] = useState(null)
+   const router = useRouter()
 
    async function extractAllAddresses(){
     setPageLevelLoader(true)
@@ -122,6 +124,7 @@ export default function Account(){
               <p>{user?.role}</p>
             </div>
             <button
+              onClick={() => router.push('/orders')}
               className="mt-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
             >
               View Your Orders

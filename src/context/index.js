@@ -50,6 +50,7 @@ export default function GlobalState({ children }){
   const [checkoutFormData, setCheckoutFormData] = useState(initialCheckoutFormData)
 
   const [allOrdersForUser, setAllOrdersForUser] = useState([])
+  const [orderDetails, setOrderDetails] = useState(null)
 
   const router = useRouter()
   const pathName = usePathname()
@@ -100,7 +101,9 @@ export default function GlobalState({ children }){
       checkoutFormData, 
       setCheckoutFormData,
       allOrdersForUser, 
-      setAllOrdersForUser
+      setAllOrdersForUser,
+      orderDetails, 
+      setOrderDetails
       }}
     >
       { children }
