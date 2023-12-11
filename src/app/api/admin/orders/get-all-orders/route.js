@@ -28,7 +28,7 @@ export async function GET(req){
     } else {
       return NextResponse.json({
         success: false,
-        messsage: "You are not authenticated"
+        messsage: "You are not authorized "
       })
     }
 
