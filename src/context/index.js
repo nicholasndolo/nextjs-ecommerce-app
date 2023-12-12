@@ -49,6 +49,8 @@ export default function GlobalState({ children }){
 
   const [allOrdersForUser, setAllOrdersForUser] = useState([])
   const [orderDetails, setOrderDetails] = useState(null)
+  const [allOrdersForAllUsers, setAllOrdersForAllUsers] = useState([])
+
 
   const router = useRouter()
   const pathName = usePathname()
@@ -101,7 +103,9 @@ export default function GlobalState({ children }){
       allOrdersForUser, 
       setAllOrdersForUser,
       orderDetails, 
-      setOrderDetails
+      setOrderDetails,
+      allOrdersForAllUsers, 
+      setAllOrdersForAllUsers
       }}
     >
       { children }
