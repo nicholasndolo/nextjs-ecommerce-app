@@ -7,26 +7,26 @@ import ComponentLevelLoader from "@/components/Loader/componentLevel"
 import Notification from "@/components/Notification"
 import { GlobalContext } from "@/context"
 import { addNewProduct, updateProduct } from "@/services/product"
-import { AvailableSizes, adminAddProductformControls, firebaseConfig, firebaseStroageURL } from "@/utils"
+import { AvailableSizes, adminAddProductformControls, firebaseConfig, firebaseStorageURL } from "@/utils"
 import { initializeApp } from 'firebase/app'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { useRouter } from "next/navigation"
-import { useContext, useEffect } from "react"
+import {useState, useContext, useEffect } from "react"
 import { toast } from "react-toastify";
 
 const app = initializeApp(firebaseConfig)
-const storage = getStorage(app, firebaseStroageURL ) 
+const storage = getStorage(app, firebaseStorageURL ) 
 
 const createUniqueFileName = (file) => {
   const timestamp = Date.now()
   const randomStringValue = Math.random().toString(36).substring(2,12)
 
-  return `${getFile.name}-${timestamp}-${randomStringValue}`
+  return `${file.name}-${timestamp}-${randomStringValue}`
 }
 
 async function helperForUploadingImageToFirebase(file){
-  const getFileName = createUniqueFileName(file)
-  const storageReference = ref(storage, `ecommerce/${getFileName}}` )
+  const fileName = createUniqueFileName(file)
+  const storageReference = ref(storage, `ecommerce/${fileName}}`)
 
   const uploadImage = uploadBytesResumable(storageReference, file)
 
@@ -74,7 +74,7 @@ export default function AdminAddNewProduct (){
   }, [currentUpdatedProduct])
 
   async function handleImage(event){
-    console.log(event.target.files)
+    console.log(event.target.files[0].name)
 
     const extractImageUrl = await helperForUploadingImageToFirebase(event.target.files[0])
 

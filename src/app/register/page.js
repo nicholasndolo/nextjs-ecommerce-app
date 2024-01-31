@@ -24,8 +24,6 @@ export default function Register(){
 
   const router = useRouter()
 
-  console.log(formData)
-
   function isFormValid() {
     return formData && formData.name && formData.name.trim() !== ''
     && formData.email && formData.email.trim() !== ''
@@ -35,9 +33,9 @@ export default function Register(){
   async function handleRegister() {
     setPageLevelLoader(true);
     const data = await registerNewUser(formData)
-      console.log(data)
-    if (data.success) {
-      toast.success(data.message, {
+      console.log(data, "register")
+    if(data?.success) {
+      toast.success(data?.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
 
@@ -45,7 +43,7 @@ export default function Register(){
       setPageLevelLoader(false);
       setFormData(initialFormData);
     } else {
-      toast.error(data.message, {
+      toast.error(data?.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
       
@@ -57,6 +55,8 @@ export default function Register(){
   useEffect(() => {
     if(isAuthUser)router.push('/')
   },[isAuthUser] )
+
+  console.log(formData)
 
   return (
     <div className=" relative bg-white">

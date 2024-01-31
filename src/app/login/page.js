@@ -53,7 +53,7 @@ export default function Login(){
       setFormData(initialFormData)
       Cookies.set('token', res?.finalData?.token)
       localStorage.setItem('user',JSON.stringify(res?.finalData?.user))
-        setComponentLevelLoader({loading: false, id: ''})
+      setComponentLevelLoader({loading: false, id: ''})
 
     } else {
       toast.error(res.message, {

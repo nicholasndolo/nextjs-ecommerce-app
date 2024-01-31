@@ -1,9 +1,8 @@
-// import connectToDB from "@/database"
-import { connectToDB } from '@/database';
 import Joi from "joi"
 import { hash } from "bcryptjs"
 import { NextResponse } from "next/server"
 import User from "@/models/user"
+import connectToDB from "@/database"
 
 
 
@@ -57,7 +56,7 @@ export async function POST(req){
       }
     }
 
-  } catch(error){
+  } catch(e){
     console.log("Error in new user registration")
 
     return NextResponse.json({

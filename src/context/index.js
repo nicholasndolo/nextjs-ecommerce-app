@@ -29,7 +29,7 @@ const protectedAdminRoutes = [
 
 export default function GlobalState({ children }){
   const [showNavModal, setShowNavModal] = useState(false);
-  const [pageLevelLoader, setPageLevelLoader] = useState(true);
+  const [pageLevelLoader, setPageLevelLoader] = useState(false);
   const [componentLevelLoader, setComponentLevelLoader] = useState({loading: false, id: ''});
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
@@ -69,7 +69,7 @@ export default function GlobalState({ children }){
   }, [Cookies])
 
   useEffect(() => {
-    if(pathName !== '/register' && user && Object.keys(user).length === 0 && protectedRoutes.inludes(pathName) > -1) router.push('/login')
+    if(pathName !== '/register' && !pathName.includes('product') && pathName !== '/' && user && Object.keys(user).length === 0 && protectedRoutes.includes(pathName) > -1) router.push('/login')
   },[user, pathName])
 
   useEffect(() => {

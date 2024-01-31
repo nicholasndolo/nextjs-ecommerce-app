@@ -1,5 +1,5 @@
 // import connectToDB from "@/database"
-import { connectToDB } from '@/database';
+import connectToDB from "@/database"
 import User from "@/models/user";
 import { compare } from "bcryptjs";
 import Joi from "joi";
@@ -31,7 +31,7 @@ export async function POST(req){
 
   try {
     const isUser = await User.findOne({email})
-    console.log(isUser)
+    console.log(isUser, )
     if(!isUser){
       return NextResponse.json({
         success: false,
@@ -64,12 +64,11 @@ export async function POST(req){
     return NextResponse.json({
       success: true,
       message: 'Login successful!',
-      finalData
+      finalData,
     })
-  }
 
-  catch(err) {
-    console.log(err)
+  }catch(e) {
+    console.log(e)
 
     return NextResponse.json({
       success: false,

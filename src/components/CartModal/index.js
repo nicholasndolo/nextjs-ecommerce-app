@@ -4,7 +4,7 @@ import { Fragment, useContext, useEffect } from "react";
 import CommonModal from "../CommonModal";
 import { GlobalContext } from "@/context";
 import { deleteFromCart, getAllCartItems } from "@/services/cart";
-import { ComponentLevelLoader } from '@/components/Loader/componentLevel';
+import ComponentLevelLoader from "../Loader/componentLevel"
 import { toast } from 'react-toastify';
 import { useRouter } from "next/router";
 
@@ -19,8 +19,20 @@ export default function CartModal() {
     const res = await getAllCartItems(user?._id)
 
     if(res.success){
-      setCartItems(res.data)
-      localStorage.setItem('cartItems', JSON.stringify(res.data))
+      const updatedData = res.data && res.data.length ? 
+      res.data.map((item) => ({
+        ...item,
+        productID: {
+          ...item.productID,
+          price: item.productID.onSale === 'yes'
+          ? parseInt((item.productID.price - item.productID.price * (item.productID.priceDrop/100)).toFixed(2))
+          : item.productID.price
+        }
+      }))
+      : []
+
+      setCartItems(updatedData)
+      localStorage.setItem('cartItems', JSON.stringify(updatedData))
     }
     // console.log(res)
 

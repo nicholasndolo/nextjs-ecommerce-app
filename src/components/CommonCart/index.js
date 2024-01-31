@@ -1,8 +1,11 @@
 'use client'
 
+import { useRouter } from "next/navigation"
 import ComponentLevelLoader from "../Loader/componentLevel"
 
 export default function CommonCart({cartItems = [], handleDeleteCartItem, componentLevelLoader}){
+
+  const router = useRouter()
   
   return (
     <section className="h-screen bg-gray-100">
@@ -88,6 +91,7 @@ export default function CommonCart({cartItems = [], handleDeleteCartItem, compon
                 </div>
                 <div className="mt-5 text-center">
                   <button
+                  onClick={() => router.push('/checkout')}
                   disabled={cartItems && !cartItems.length} 
                   className="disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide">
                     Checkout

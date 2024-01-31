@@ -7,7 +7,11 @@ import { productByCategory } from "@/services/product";
 export default async function AllMenProducts(){
 
   const getAllProducts = await productByCategory('men')
+  console.log(getAllProducts)
 
-  return <CommonListing data={getAllProducts && getAllProducts.data}/>
+  return (
+   <
+    CommonListing data={getAllProducts && getAllProducts.data}/>
+   )
 
 }

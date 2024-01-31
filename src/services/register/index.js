@@ -7,11 +7,12 @@ export const registerNewUser = async (formData) => {
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     })
 
     const finalData = await response.json()
     return finalData
+    console.log(finalData)
   } catch (error) {
     console.log("error", error)
   }

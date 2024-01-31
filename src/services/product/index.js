@@ -26,12 +26,13 @@ export const addNewProduct = async (formData) => {
 
 export const getAllAdminProducts = async()=> {
   try {
-    const response = await fetch('hhtp://localhost/api/admin/all-products',{
+    const response = await fetch('http://localhost/api/admin/all-products',{
       method: 'GET',
       cache: "no-store"
     })
 
     const data = await response.json()
+    console.log(data)
 
     return data
 
@@ -85,7 +86,7 @@ export const productByCategory = async(id)=>{
       cache: 'no-store'
     })
 
-    const data = (await res).json()
+    const data = await res.json()
 
     return data
 

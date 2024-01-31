@@ -1,8 +1,8 @@
-
-import { connectToDB } from '@/database';
 import AuthUser from '@/middleware/AuthUser';
 import Product from '@/models/product';
+import Joi from "joi";
 import { NextResponse } from 'next/server';
+import connectToDB from "@/database"
 
 
 const AddNewProductSchema = Joi.object({

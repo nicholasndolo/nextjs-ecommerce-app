@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client"
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import ProductButton from "./ProductButtons";
 import ProductCard from "./ProductCard";
 import Notification from "../Notification";
@@ -6,6 +8,7 @@ import Notification from "../Notification";
 
 export default function CommonListing({data}){
   const router = useRouter()
+
 
   useEffect(() => {
     router.refresh();
