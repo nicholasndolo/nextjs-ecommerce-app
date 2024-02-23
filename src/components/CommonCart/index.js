@@ -93,7 +93,7 @@ export default function CommonCart({cartItems = [], handleDeleteCartItem, compon
                   <button
                   onClick={() => router.push('/checkout')}
                   disabled={cartItems && !cartItems.length} 
-                  className="disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide">
+                  className="disabled:opacity-50 group inline-flex w-full items-center justify-center bg-green-500 px-6 py-4 text-lg text-white font-medium uppercase tracking-wide">
                     Checkout
                   </button>
                 </div>

@@ -7,11 +7,13 @@ import ComponentLevelLoader from "../Loader/componentLevel";
 import { addToCart } from "@/services/cart";
 import Notification from "../Notification";
 
-export default function CommonDetails(){
+export default function CommonDetails({item}){
 
   const{ setComponentLevelLoader, componentLevelLoader, user, setShowCartModal } = useContext(GlobalContext)
 
    async function handleAddToCart(item){
+
+    console.log("handleAddToCart:", item)
     setComponentLevelLoader({loading: true, id: ''})
     const res = await addToCart({productID: item._id, userID: user._id})
 
@@ -97,7 +99,7 @@ export default function CommonDetails(){
           <button
            type="button"
            onClick={() => handleAddToCart(item)}
-           className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium tracking-wide uppercase text-white"
+           className="mt-1.5 inline-block bg-green-500 px-5 py-3 text-xs font-medium tracking-wide uppercase text-white"
           >
             {componentLevelLoader && componentLevelLoader.loading? 
             <ComponentLevelLoader

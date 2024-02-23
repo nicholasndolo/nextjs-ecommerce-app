@@ -1,4 +1,4 @@
-"use-client"
+"use client"
 
 import Notification from "@/components/Notification"
 import { GlobalContext } from "@/context"
@@ -8,7 +8,7 @@ import { callStripeSession } from "@/services/stripe"
 import { loadStripe } from "@stripe/stripe-js"
 import { useRouter, useSearchParams } from "next/navigation"
 
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { PulseLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 
@@ -23,7 +23,7 @@ export default function Checkout(){
   const router = useRouter()
   const params = useSearchParams()
 //add publishable key from stripe API Keys
-  const publishableKey = ""
+  const publishableKey = "pk_test_51OlUFEE20DgbBm66s3cc2xjqRCtbEWPKrl3RbdQhH8RTydgv5MxSstcjdY7vdpaNQKZR3MWmOOcOygGgCZxUP1l400SufU53Yw"
   const stripePromise = loadStripe(publishableKey)
 
   async function getAllAddresses(){
@@ -57,12 +57,14 @@ export default function Checkout(){
             product: item.productID
           })),
           paymentMethod: 'Stripe',
-          totalPrice: cartItems.reduce((total, item) => item.productID + total, 0),
+          totalPrice: cartItems.reduce((total, item) => item.productID.price + total, 0),
           isPaid: true,
           isProcessing: true,
           paidAt: new Date(),
         }
         const res = await createNewOrder(createFinalCheckoutFormData)
+
+        console.log("createFinalCheckoutFormData:", res.success)
 
         if(res.success){
           setIsOrderProcessing(false)
@@ -114,7 +116,7 @@ export default function Checkout(){
       price_data: {
         currency: 'usd',
         product_data: {
-          image: [item.productID.imageUrl],
+          images: [item.productID.imageUrl],
           name: item.productID.name
         },
         unit_amount: item.productID.price * 100
@@ -128,7 +130,7 @@ export default function Checkout(){
     localStorage.setItem('checkoutFormData', JSON.stringify(checkoutFormData))
 
     const { error } = await stripe.redirectToCheckout({
-      sessionId: res.setIsOrderProcessing
+      sessionId: res.id
     })
 
     console.log(error)
@@ -138,7 +140,7 @@ export default function Checkout(){
     if(orderSuccess) {
       setTimeout(() =>{
         // setOrderSuccess(false)
-        router.push('/order')
+        router.push('/orders')
       }, [2000])
     }
 
@@ -217,14 +219,14 @@ export default function Checkout(){
             {
               addresses && addresses.length ?(
               addresses.map((item) => (
-                <div onClick={() => handleSelectedAddress(item)} key={item._id} className={`border p-6 ${item._id === selectedAddress ?'border-red-900' : '' }`}>
+                <div onClick={() => handleSelectedAddress(item)} key={item._id} className={`border p-6 ${item._id === selectedAddress ?'border-green-500' : '' }`}>
                    <p>Name: {item.fullName} </p>
                       <p>Address: {item.address}</p>
                       <p>City: {item.city}</p>
                       <p>Country: {item.country}</p>
                       <p>PostalCode: {item.postalCode} </p>
                       <button
-                        className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                        className="mt-5 mr-5 inline-block bg-green-500 text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
                       >
                         {item._id === selectedAddress ? 'Selected Address':'Select Address'}
                       </button>
@@ -236,7 +238,7 @@ export default function Checkout(){
           </div>
           <button
           onClick={() => router.push('/account')}
-          className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+          className="mt-5 mr-5 inline-block bg-green-500 text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
         >
           Add new address
         </button>
@@ -267,7 +269,7 @@ export default function Checkout(){
             <button
             disabled={(cartItems && cartItems.length ===0) || Object.keys(checkoutFormData.shippingAddress).length === 0}
             onClick={handleCheckout}
-            className="disabled:opacity-50 mt-5 mr-5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+            className="disabled:opacity-50 mt-5 mr-5 w-full inline-block bg-green-500 text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
             >
             Checkout
             </button>

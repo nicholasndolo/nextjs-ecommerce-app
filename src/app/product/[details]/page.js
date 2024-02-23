@@ -5,8 +5,7 @@ import { productById } from "@/services/product"
 export default async function ProductDetails({params}) {
 
   const productDetailsData = await productById(params.details)
-
-  // console.log(productDetailsData)
+  // console.log(productDetails)
   return (
     <div>
       <CommonDetails

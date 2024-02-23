@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/database';
+import connectToDB from '@/database';
 import AuthUser from '@/middleware/AuthUser';
 import Address from '@/models/address';
 
@@ -16,9 +16,10 @@ export async function PUT(req){
     
     const { _id, fullName, city, address, county, postalCode } = data
     
-    const updatedAddress = Address.findOneAndUpdate({
+    const updatedAddress = await Address.findOneAndUpdate({
       _id: _id
     }, {fullName, city, address, county, postalCode}, {new: true})
+
 
     if(updatedAddress) {
       return NextResponse.json({

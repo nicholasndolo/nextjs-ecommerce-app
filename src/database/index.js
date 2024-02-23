@@ -8,7 +8,7 @@ const configOptions = {
 
 const connectToDB = async () => {
   
- const connectionUrl = "mongodb+srv://nickndolo95:123456782023@cluster0.b5hcndh.mongodb.net/"
+ const connectionUrl = "mongodb+srv://nickndolo95:123456782024@cluster0.h5wron2.mongodb.net/"
 
   
   await mongoose.connect(connectionUrl).then(() => console.log("Database connected successfully !")).catch(() => console.log(`Getting error from DB connection`))

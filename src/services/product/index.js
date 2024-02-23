@@ -26,8 +26,8 @@ export const addNewProduct = async (formData) => {
 
 export const getAllAdminProducts = async()=> {
   try {
-    const response = await fetch('http://localhost/api/admin/all-products',{
-      method: 'GET',
+    const response = await fetch("http://localhost:3000/api/admin/all-products", {
+      method: 'GET', 
       cache: "no-store"
     })
 
@@ -36,14 +36,14 @@ export const getAllAdminProducts = async()=> {
 
     return data
 
-  } catch (error) {
+  } catch(error) {
     console.log(error)
   }
 }
 
 export const updateProduct = async (formData) => {
   try {
-    const res = await fetch('/api/admin/update-product', {
+    const res = await fetch('http://localhost:3000/api/admin/update-product', {
       method: 'PUT',
       headers: {
         "content-type": "application/json",
@@ -79,15 +79,13 @@ export const deleteProduct = async (id) => {
 }
 
 
-export const productByCategory = async(id)=>{
+export const productByCategory = async (id) => {
   try{
-    const res = fetch(`http://localhost:3000/api/admin/product-by-category?id=${id}`,{
+    const res = await fetch(`http://localhost:3000/api/admin/product-by-category?id=${id}`,{
       method: 'GET',
       cache: 'no-store'
     })
-
     const data = await res.json()
-
     return data
 
   } catch(error){

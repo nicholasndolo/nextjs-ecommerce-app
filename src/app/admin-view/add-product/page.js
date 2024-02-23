@@ -14,32 +14,40 @@ import { useRouter } from "next/navigation"
 import {useState, useContext, useEffect } from "react"
 import { toast } from "react-toastify";
 
-const app = initializeApp(firebaseConfig)
-const storage = getStorage(app, firebaseStorageURL ) 
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app, firebaseStorageURL) 
 
-const createUniqueFileName = (file) => {
+const createUniqueFileName = (getFile) => {
   const timestamp = Date.now()
   const randomStringValue = Math.random().toString(36).substring(2,12)
 
-  return `${file.name}-${timestamp}-${randomStringValue}`
+  return `${getFile.name}-${timestamp}-${randomStringValue}`
 }
 
 async function helperForUploadingImageToFirebase(file){
+  
   const fileName = createUniqueFileName(file)
-  const storageReference = ref(storage, `ecommerce/${fileName}}`)
+  console.log(fileName)
+  const storageReference = ref(storage, `ecommerce/${fileName}`)
 
   const uploadImage = uploadBytesResumable(storageReference, file)
 
   return new Promise((resolve, reject) => {
-    uploadImage.on('state_changed', (snapshot)=> {}, (error)=>{
-      console.log(error)
-      reject(error)
-    }, () => {
-      getDownloadURL(uploadImage.snapshot.ref).then(downloadUrl => resolve(downloadUrl)).catch(error => reject(error))
-    } )
+    uploadImage.on(
+      'state_changed', 
+      (snapshot)=> {},
+      (error)=>{
+       console.log(error)
+       reject(error)
+      }, 
+      () => {
+       getDownloadURL(uploadImage.snapshot.ref)
+       .then(downloadUrl => resolve(downloadUrl))
+       .catch(error => reject(error))
+      })
   })
 
-}
+ }
 
 const initialFormData = {
   name: '',
@@ -64,7 +72,7 @@ export default function AdminAddNewProduct (){
     setCurrentUpdatedProduct
   } = useContext(GlobalContext)
 
-  console.log(currentUpdatedProduct)
+  console.log("currentUpdatedProduct:", currentUpdatedProduct)
 
   const router = useRouter()
 
@@ -74,7 +82,7 @@ export default function AdminAddNewProduct (){
   }, [currentUpdatedProduct])
 
   async function handleImage(event){
-    console.log(event.target.files[0].name)
+    console.log(event.target.files)
 
     const extractImageUrl = await helperForUploadingImageToFirebase(event.target.files[0])
 
@@ -181,7 +189,7 @@ export default function AdminAddNewProduct (){
             )}
             <button
              onClick={handleAddProduct}
-             className="inline-flex  w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide">
+             className="inline-flex  w-full items-center justify-center bg-green-500 px-6 py-4 text-lg text-white font-medium uppercase tracking-wide">
              {
               componentLevelLoader && componentLevelLoader.loading ?( 
               <ComponentLevelLoader

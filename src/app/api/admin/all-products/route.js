@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/database';
+import connectToDB from '@/database';
 import Product from '@/models/product';
 
 export const dynamic = "force-dynamic"
 
 export async function GET(req){
-  
+  console.log(req)
   try {
     await connectToDB()
 

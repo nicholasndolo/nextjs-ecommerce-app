@@ -98,7 +98,7 @@ export default function Login(){
                       <button
                         onClick={handleLogin}
                         disabled= {!isValidForm()}
-                        className="disabled:opacity-50 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide"
+                        className="disabled:opacity-50 inline-flex w-full items-center justify-center bg-green-500 px-6 py-4 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide"
                       >
                         {componentLevelLoader && componentLevelLoader.loading? (
                           <ComponentLevelLoader
@@ -114,7 +114,7 @@ export default function Login(){
                         <p>Don't have an account ?</p>
                         <button
                         onClick={() => router.push('/register')}
-                        className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide"
+                        className="inline-flex w-full items-center justify-center bg-green-500 px-6 py-4 text-lg text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide"
                       >
                         Register
                       </button>

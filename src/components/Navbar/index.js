@@ -77,9 +77,9 @@ export default function Navbar(){
                 <Fragment>
                   <button 
                    onClick={() => router.push('/account')}
-                   className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">Account</button>
+                   className="mt-1.5 inline-block bg-green-500 hover:bg-white hover:border-2 hover:border-green-500  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:text-green-500">Account</button>
                   <button 
-                    className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                    className="mt-1.5 inline-block bg-green-500 hover:bg-white hover:border-2 hover:border-green-500 px-5 py-3 text-xs font-medium uppercase tracking-wide text-white hover:text-green-500"
                     onClick={() => setShowCartModal(true) }
                   >
                       Cart
@@ -88,14 +88,14 @@ export default function Navbar(){
                 ) : null }
             {
               user?.role === 'admin' ? (
-                  isAdminView ? (<button onClick={() => router.push('/')} className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white" >Client View</button>
+                  isAdminView ? (<button onClick={() => router.push('/')} className="mt-1.5 inline-block bg-green-500 hover:bg-white hover:border-2 hover:border-green-500 hover:text-green-500 px-5 py-3 text-xs font-medium uppercase tracking-wide text-white" >Client View</button>
                 ) : (
-                  <button onClick={() => router.push('/admin-view')} className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">Admin View</button>
+                  <button onClick={() => router.push('/admin-view')} className="mt-1.5 inline-block bg-green-500 hover:bg-white hover:border-2 hover:border-green-500 hover:text-green-500 px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">Admin View</button>
                 )
               ) : null
             }
 
-            {isAuthUser ? <button onClick = {handleLogout} className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">Logout</button > : <button onClick={() => router.push('/login')} className="mt-1.5 inline-block bg-black  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">Login</button>}
+            {isAuthUser ? <button onClick = {handleLogout} className="mt-1.5 inline-block bg-green-500 hover:bg-white hover:border-2 hover:border-green-500 hover:text-green-500  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">Logout</button > : <button onClick={() => router.push('/login')} className="mt-1.5 inline-block bg-green-500 hover:bg-white hover:border-2 hover:border-green-500 hover:text-green-500  px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">Login</button>}
 
             <button
               data-collapse-toggle="navbar-sticky"

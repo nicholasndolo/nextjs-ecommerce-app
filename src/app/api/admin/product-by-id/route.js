@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/database';
+import connectToDB from '@/database';
 import Product from '@/models/product';
 
 
@@ -11,7 +11,7 @@ export async function GET(req) {
     await connectToDB()
 
     const { searchParams } = new URL(req.url)
-    const productId = searchParams.get('id')
+    const productId = searchParams.get("id")
 
     if(!productId){
       return NextResponse.json({
@@ -21,12 +21,12 @@ export async function GET(req) {
       })
     }
 
-    const getData = await Product.findById({_id: productId})
+    const product = await Product.find({_id: productId})
 
-    if(getData && getData.length) {
+    if(product && product.length) {
       return NextResponse.json({
         success: true,
-        data: getData[0],
+        data: product[0],
       })
     } else {
       return NextResponse.json({

@@ -9,11 +9,18 @@ import { useContext } from "react"
 import { toast } from 'react-toastify';
 
 
-export default function ProductButton({item}){
+export default function ProductButton({item }){
 
   const pathName = usePathname()
 
-  const { setCurrentUpdatedProduct, setComponentLevelLoader,  componentLevelLoader, user, showCartModal, setShowCartModal } = useContext(GlobalContext)
+  const { 
+    setCurrentUpdatedProduct, 
+    setComponentLevelLoader,  
+    componentLevelLoader, 
+    user, 
+    showCartModal, 
+    setShowCartModal
+  } = useContext(GlobalContext)
 
   const router = useRouter()
   
@@ -30,10 +37,10 @@ export default function ProductButton({item}){
       })
       router.refresh()
     } else{
+      setComponentLevelLoader({loading: false, id: ''})
       toast.error(res.message, {
         position: toast.POSITION.TOP_RIGHT
       })
-      setComponentLevelLoader({loading: false, id: ''})
 
     }
   }
@@ -69,37 +76,38 @@ export default function ProductButton({item}){
           setCurrentUpdatedProduct(item)
           router.push('/admin-view/add-product')
         }}
-        className="mt-1.5 flex w-full justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide"
+        className="mt-1.5 flex w-full justify-center border-2 border-green-500 px-5 py-3 text-xs text-black font-medium uppercase tracking-wide"
         >
           Update
         </button>
          <button 
           onClick={()=> handleDeleteProduct(item)}
-          className="mt-1.5 flex w-full justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide"
+          className="mt-1.5 flex w-full justify-center border-2 border-green-500 px-5 py-3 text-xs text-black font-medium uppercase tracking-wide"
         >
           {
-              componentLevelLoader &&   componentLevelLoader.loading && item._id ===   componentLevelLoader.id ? (
+              componentLevelLoader && componentLevelLoader.loading && item._id ===   componentLevelLoader.id ? (
               <ComponentLevelLoader
               text={'Deleting Product'}
-              color={"#ffffff"}
+              color="black"
               loading={componentLevelLoader && componentLevelLoader.loading}
               />
               ): (
                 'DELETE'
-                )}
+                )
+          }
        
         </button>
        </> : 
        <>
         <button
         onClick={() => handleAddToCart(item)}
-        className="mt-1.5 flex w-full justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide"
+        className="mt-1.5 flex w-full justify-center border-2 border-green-500 px-5 py-3 text-xs text-black-500 font-medium uppercase tracking-wide"
         >
         {
           componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.id === item._id
           ? <ComponentLevelLoader
               text={'Adding to cart'}
-              color={"#ffffff"}
+              color="black"
               loading={componentLevelLoader && componentLevelLoader.loading}
            />
           : ' Add To Cart'

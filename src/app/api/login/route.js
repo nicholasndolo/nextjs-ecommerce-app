@@ -18,6 +18,7 @@ export const dynamic = "force-dynamic"
 export async function POST(req){
   await connectToDB()
 
+
   const { email, password } = await req.json();
 
   const { error } = schema.validate({email, password})
@@ -31,7 +32,7 @@ export async function POST(req){
 
   try {
     const isUser = await User.findOne({email})
-    console.log(isUser, )
+    
     if(!isUser){
       return NextResponse.json({
         success: false,

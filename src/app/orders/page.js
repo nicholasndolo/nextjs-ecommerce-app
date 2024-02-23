@@ -2,9 +2,10 @@
 
 import { GlobalContext } from "@/context"
 import { getAllOrdersForUser } from "@/services/order"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { toast } from 'react-toastify';
 import { PulseLoader } from 'react-spinners';
+import Notification from '@/components/Notification'
 import { useRouter } from "next/navigation";
 
 
@@ -43,7 +44,7 @@ export default function Orders(){
 
   useEffect(() => {
     if(user !== null ) extractAllOrders()
-  }, [])
+  }, [user])
 
   // console.log(allOrdersForUser)
 

@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/database';
+import connectToDB from '@/database';
 import Product from '@/models/product';
 
 
@@ -10,6 +10,7 @@ export async function GET(req){
   try {
     await connectToDB()
     const { searchParams } = new URL(req.url)
+  
     const id = searchParams.get('id')
     const getData = await Product.find({category: id})
 

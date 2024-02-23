@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 
-export const createNewOrder = async(formData)=>{
+export const createNewOrder = async(formData) => {
    try{
     const res = await fetch('/api/order/create-order', {
       method: 'POST',
@@ -39,7 +39,7 @@ export const getAllOrdersForUser = async(id)=>{
 
 export const getOrderDetails = async(id)=>{
    try{
-    const res = await fetch(`api/order/order-details?id=${id}`, {
+    const res = await fetch(`/api/order/order-details?id=${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,

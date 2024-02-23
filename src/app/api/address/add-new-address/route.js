@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/database';
+import connectToDB from '@/database';
 import AuthUser from '@/middleware/AuthUser';
 import Joi from 'joi';
 import Address from '@/models/address';

@@ -125,7 +125,7 @@ export default function Account(){
             </div>
             <button
               onClick={() => router.push('/orders')}
-              className="mt-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+              className="mt-5 inline-block border-2 border-green-500 text-black px-5 py-3 text-xs font-medium uppercase tracking-wide"
             >
               View Your Orders
             </button>
@@ -151,19 +151,19 @@ export default function Account(){
                       <p>PostalCode: {item.postalCode} </p>
                       <button
                         onClick={() => handleUpdateAddress(item)}
-                        className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                        className="mt-5 mr-5 inline-block border-2 border-green-500 text-black px-5 py-3 text-xs font-medium uppercase tracking-wide"
                       >
                         Update
                       </button>
                       <button
                         onClick={()=> handleDelete(item._id)}
-                        className="mt-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                        className="mt-5 inline-block border-2 border-green-500 text-black px-5 py-3 text-xs font-medium uppercase tracking-wide"
                       >
                         {
                           componentLevelLoader && componentLevelLoader.loading && componentLevelLoader.id === item._id? (
                           <ComponentLevelLoader
                             text={"Deleting"}
-                            color={"#ffffff"}
+                            color="black"
                             loading={ componentLevelLoader &&componentLevelLoader.loading}
                           />
                         ) : (
@@ -180,7 +180,7 @@ export default function Account(){
             <div className="mt-4">
             <button
               onClick={() => setShowAddressForm(!showAddressForm)}
-              className="mt-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+              className="mt-5 inline-block bg-green-500 text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
             >
              { showAddressForm ? 'Hide Address Form' : ' Add New Address'}
             </button>
@@ -201,7 +201,7 @@ export default function Account(){
                 </div>
               <button
               onClick={handleAddOrUpdateAddress}
-              className="mt-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+              className="mt-5 inline-block bg-green-500 text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
             >
               {
                 componentLevelLoader && componentLevelLoader.loading ? (

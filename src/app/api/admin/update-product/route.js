@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/database';
+import connectToDB from '@/database';
 import Product from '@/models/product';
 import AuthUser from '@/middleware/AuthUser';
 
@@ -26,7 +26,7 @@ export async function PUT(req) {
          deliveryInfo, 
          onSale, 
          priceDrop, 
-         imageUrl
+         imageUrl,
         } = extractData
  
      const updatedProduct = await Product.findOneAndUpdate({
@@ -36,17 +36,18 @@ export async function PUT(req) {
        name,
        price, 
        description, 
-       category, sizes, 
+       category,
+       sizes, 
        deliveryInfo, 
        onSale, 
        priceDrop, 
        imageUrl 
      },
-     { new: true}
+     { new: true }
      )
  
      if(updatedProduct){
-       return NextResponse({
+       return NextResponse.json({
          success: true,
          message: 'Product updated successfully'
        })

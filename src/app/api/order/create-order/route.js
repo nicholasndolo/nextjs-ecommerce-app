@@ -1,5 +1,5 @@
 
-import { connectToDB } from '@/database';
+import connectToDB from '@/database';
 import AuthUser from '@/middleware/AuthUser';
 import Cart from '@/models/cart';
 import Order from '@/models/order';
@@ -17,14 +17,16 @@ export async function POST(req){
       const data = await req.json()
       const { user }  = data
 
+
       const saveNewOrder = await Order.create(data)
+      
 
       if(saveNewOrder){
         await Cart.deleteMany({ userID: user })
 
         return NextResponse.json({
           success: true,
-          message: "Products are on the way"
+          message: "Products are on the way !"
         })
       } else {
         return NextResponse.json({

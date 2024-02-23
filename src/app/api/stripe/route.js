@@ -1,9 +1,8 @@
 
 import { NextResponse } from 'next/server';
-import Checkout from '../../checkout/page';
 import AuthUser from '@/middleware/AuthUser';
 
-const stripe = require('stripe')('paste-stripe-secret-key-here');
+const stripe = require('stripe')('sk_test_51OlUFEE20DgbBm66fT0h9STrbEg68yXGKzI0YCvcArDLsQ8SoBUePh9pL2ePfbfrkrs2H1N4BhI2nYVqzISgAvLK003IdeB1mc');
 
 export const dynamic = "force-dynamic"
 
@@ -11,14 +10,14 @@ export async function POST(req){
   try{
     const isAuthUser = await AuthUser(req)
     if(isAuthUser){
-      const res = await res.json()
+      const res = await req.json()
 
-      const session = await stripe.Checkout.sessions.create({
+      const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: res,
         mode: 'payment',
-        success_url: 'http://localhost:300/checkout' + '?status=success',
-        cancel_url: 'http://localhost:300/checkout' + '?status=cancel'
+        success_url: 'http://localhost:3000/checkout' + '?status=success',
+        cancel_url: 'http://localhost:3000/checkout' + '?status=cancel'
       })
   
       return NextResponse.json({

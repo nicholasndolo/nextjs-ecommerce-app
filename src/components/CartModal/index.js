@@ -6,7 +6,7 @@ import { GlobalContext } from "@/context";
 import { deleteFromCart, getAllCartItems } from "@/services/cart";
 import ComponentLevelLoader from "../Loader/componentLevel"
 import { toast } from 'react-toastify';
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 
 export default function CartModal() {
@@ -128,7 +128,7 @@ async function  handleDeleteCartItem(cartItemId) {
             router.push('/cart')
             setShowCartModal(false)
           }}
-            className="mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+            className="mt-1.5 w-full inline-block bg-green-500 text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
           >
             Go To Cart
           </button>
@@ -139,7 +139,7 @@ async function  handleDeleteCartItem(cartItemId) {
             } }
             disabled={ cartItems && !cartItems.length}
             type="button"
-            className="mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide disabled:opacity-50"
+            className="mt-1.5 w-full inline-block bg-green-500 text-white px-5 py-3 text-xs font-medium uppercase tracking-wide disabled:opacity-50"
           >
             Checkout
           </button>

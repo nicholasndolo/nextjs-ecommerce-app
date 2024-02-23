@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { connectToDB } from '@/database';
+import connectToDB from '@/database';
 import AuthUser from '@/middleware/AuthUser';
 import Order from '@/models/order';
 
@@ -11,10 +11,12 @@ export async function GET(req){
   try{
     await connectToDB()
     const isAuthUser = await AuthUser(req)
+    console.log("isAuthUserOd:", isAuthUser)
 
     if(isAuthUser){
       const { searchParams } = new URL(req.url)
       const id = searchParams.get('id')
+      console.log("ID:", id)
 
       if(!id){
         return NextResponse.json({
