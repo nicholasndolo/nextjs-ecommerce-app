@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@firebase/database": "^1.0.3",
     "@headlessui/react": "^1.7.17",
     "@stripe/stripe-js": "^2.1.11",
     "autoprefixer": "10.4.16",
