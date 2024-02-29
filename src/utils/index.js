@@ -189,13 +189,13 @@ export const AvailableSizes = [
 ];
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyCldrhLj8_pO62c-dY4MR4L2BNB9Z_Bt3M",
-  authDomain: "nextjs-ecommerce-2024.firebaseapp.com",
-  projectId: "nextjs-ecommerce-2024",
-  storageBucket: "nextjs-ecommerce-2024.appspot.com",
-  messagingSenderId: "863462063050",
-  appId: "1:863462063050:web:419de50e602e90d36c2d33",
-  measurementId: "G-NVV2BPVBFP"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
 export const firebaseStorageURL =

@@ -56,8 +56,6 @@ export default function Register(){
     if(isAuthUser)router.push('/')
   },[isAuthUser] )
 
-  console.log(formData)
-
   return (
     <div className=" relative bg-white">
       <div className="flex flex-col items-center justify-between py-0 px-10 mt-8 mr-auto xl:px-5 lg:flex-row">

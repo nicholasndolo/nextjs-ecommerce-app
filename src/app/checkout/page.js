@@ -23,7 +23,7 @@ export default function Checkout(){
   const router = useRouter()
   const params = useSearchParams()
 //add publishable key from stripe API Keys
-  const publishableKey = "pk_test_51OlUFEE20DgbBm66s3cc2xjqRCtbEWPKrl3RbdQhH8RTydgv5MxSstcjdY7vdpaNQKZR3MWmOOcOygGgCZxUP1l400SufU53Yw"
+  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   const stripePromise = loadStripe(publishableKey)
 
   async function getAllAddresses(){
@@ -63,8 +63,6 @@ export default function Checkout(){
           paidAt: new Date(),
         }
         const res = await createNewOrder(createFinalCheckoutFormData)
-
-        console.log("createFinalCheckoutFormData:", res.success)
 
         if(res.success){
           setIsOrderProcessing(false)

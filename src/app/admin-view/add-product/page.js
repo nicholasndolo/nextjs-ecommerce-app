@@ -95,8 +95,6 @@ export default function AdminAddNewProduct (){
     }
   }
 
-  console.log(formData)
-
   function handleTileClick(getCurrentItem){
     // console.log(getCurrentItem)
 

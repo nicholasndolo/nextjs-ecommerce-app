@@ -10,7 +10,7 @@ export default function InputComponent({ label, placeholder, type, onChange, val
        type={type || 'text'}
        value={value}
        onChange={onChange}
-       className="border placeholder-gray-400 focus:outline-none focus:border-black w-full p-4 mx-0 mt-0 text-base block bg-white border-gray-300 rounded-md"
+       className="border placeholder-gray-400 focus:outline-none focus:border-green-500 w-full p-4 mx-0 mt-0 text-base block bg-white border-gray-300 rounded-md"
        />
     </div>
   )
